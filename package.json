@@ -1,8 +1,8 @@
 {
-  "name": "express-typescript-skeleton",
-  "author": "Zsolt Tasnádi",
+  "name": "flat-ad",
+  "author": "Peter Vincze",
   "license": "ISC",
-  "version": "1.2.0",
+  "version": "1.0.1",
   "description": "",
   "scripts": {
     "build": "webpack",
