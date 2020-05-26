@@ -7,7 +7,7 @@ exports.seed = (knex) => {
       country: 'Hungary',
       zip: 6722,
       city: 'Szeged',
-      street: 'Gyöngytyúk'
+      street: 'Gyongytyuk'
     },
     {
       title: 'second-flat',

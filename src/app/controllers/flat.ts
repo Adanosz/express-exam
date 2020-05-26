@@ -2,16 +2,25 @@ import { Flat } from "../models/flat";
 import { database } from "../../lib/database" 
 import { Request, Response } from "express";
 import * as flatSerializer from '../serializers/flat'
+import { QueryBuilder } from "knex";
 
  
 export const index =  async (req: Request, res: Response) => {
-  const flats: Array<Flat> = await database('flats').select();
-  res.json(flatSerializer.index(flats));
+  let query: QueryBuilder = database('flats').select();
+  if(req.query.limit) {
+    query = query.limit(req.query.limit);
+  }
+  if (req.query.offset) {
+    query = query.offset(req.query.offset);
+  }
+    const flats: Array<Flat> = await query;
+    res.json(flatSerializer.index(flats));
 };
  
 export const show = async (req: Request, res: Response) => {
   try {
     const flat: Flat = await database('flats').select().where({ id: req.params.id }).first();
+    console.log(flat)
     if (flat) {
       res.json(flatSerializer.show(flat));
     } else {

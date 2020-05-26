@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Flat Ad",
-    "version": "1.0.0"
+    "title": "flat-ad",
+    "version": "1.0.1"
   },
   "schemes": [
     "http"
@@ -14,16 +14,176 @@
     "application/json"
   ],
   "paths": {
-    "/": {
+    "/flat": {
       "get": {
-        "summary": "Hello World",
-        "operationId": "helloWorld",
+        "summary": "Get all flats",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Return with Hello World message"
+            "description": "All flats",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/Flat"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Flat create",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/FlatRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Flat created"
           }
         }
       }
+    },
+    "/flat/{id}": {
+      "get": {
+        "summary": "Get flat by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return with Flat object",
+            "schema": {
+              "$ref": "#definitions/Flat"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update flat by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/FlatRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update successful"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete flat",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete successful"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Flat": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "price": {
+          "type": "integer"
+        },
+        "floorArea": {
+          "type": "integer"
+        },
+        "country": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "integer"
+        },
+        "city": {
+          "type": "string"
+        },
+        "street": {
+          "type": "string"
+        }
+      }
+    },
+    "FlatRequest": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "price": {
+          "type": "integer"
+        },
+        "floorArea": {
+          "type": "integer"
+        },
+        "country": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "integer"
+        },
+        "city": {
+          "type": "string"
+        },
+        "street": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "price",
+        "floorArea",
+        "country",
+        "zip",
+        "city",
+        "street"
+      ]
     }
   }
 }

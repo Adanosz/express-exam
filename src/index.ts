@@ -1,16 +1,20 @@
 import * as express from 'express';
-import { Request, Response } from 'express';
+import { Application } from 'express';
 import * as createMiddleware from 'swagger-express-middleware';
 import { SwaggerMiddleware } from 'swagger-express-middleware';
-import { database } from './lib/database';
+import * as swaggerUi from 'swagger-ui-express';
+import { router } from './app/routers';
+import * as swaggerDocument from '../config/swagger.json';
 
-const app = express();
-const { PORT = 3000 } = process.env;
+const app: Application = express();
+app.use(express.json());
 
 createMiddleware('config/swagger.json', app, (err, middleware: SwaggerMiddleware) => {
   if (err) {
     console.error(err);
   }
+
+  app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   app.use(
     middleware.metadata(),
@@ -18,12 +22,9 @@ createMiddleware('config/swagger.json', app, (err, middleware: SwaggerMiddleware
     middleware.parseRequest(),
     middleware.validateRequest()
   );
+  const { PORT = 3000 } = process.env;
 
-  app.get('/', async (req: Request, res: Response) => {
-    res.json({
-      message: 'hello world',
-    });
-  });
+  app.use(router);
 
   app.listen(PORT, () => {
     console.log(`server started at http://localhost:${PORT}`);
